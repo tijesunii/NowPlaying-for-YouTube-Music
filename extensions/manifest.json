@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Eben's YTM Tracker",
+  "version": "1.0",
+  "description": "Custom Chrome Extension to track YouTube Music and update the portfolio widget.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://music.youtube.com/*",
+    "http://localhost/*",
+    "https://*.allmytools.xyz/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://music.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
