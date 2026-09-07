@@ -1,13 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "Eben's YTM Tracker",
-  "version": "1.0",
-  "description": "Custom Chrome Extension to track YouTube Music and update the portfolio widget.",
+  "name": "NowPlaying for YouTube™ Music",
+  "version": "1.1",
+  "description": "Custom Chrome Extension to track YouTube Music and update a webhook.",
+  "options_page": "options.html",
+  "action": {
+    "default_popup": "options.html",
+    "default_title": "NowPlaying Settings"
+  },
   "permissions": ["storage"],
   "host_permissions": [
-    "https://music.youtube.com/*",
-    "http://localhost/*",
-    "https://*.allmytools.xyz/*"
+    "https://music.youtube.com/*"
   ],
   "content_scripts": [
     {
