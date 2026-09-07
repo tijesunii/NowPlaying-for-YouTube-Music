@@ -1,12 +1,12 @@
 # NowPlaying for YouTube™ Music
 
-A sleek, highly optimized, and CSP-compliant Chrome Extension that securely tracks what you are listening to on YouTube Music and broadcasts it to a custom webhook. Perfect for displaying a real-time "Now Playing" widget on your personal developer portfolio.
+A sleek and highly optimized Chrome Extension that securely tracks what you are listening to on YouTube Music and broadcasts it to a custom webhook. Perfect for displaying a real-time "Now Playing" widget on your personal developer portfolio.
 
 ## Architecture
 
 This project is divided into two parts:
 1. **The Chrome Extension (`extension/`)**: Extracts track info locally without heavy polling.
-2. **The Webhook Backend (`backend-template/`)**: A secure, lock-safe PHP script that receives the data and serves it to your portfolio.
+2. **The Webhook Backend (`backend-template/`)**: A PHP script that receives the data and serves it to your portfolio.
 
 ## 🚀 Installation & Setup
 

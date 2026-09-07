@@ -42,8 +42,7 @@ function sendPayload(title, artist, image, is_playing) {
         fetch(config.apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 secret: config.secretToken,
