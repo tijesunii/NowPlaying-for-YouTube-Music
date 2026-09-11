@@ -1,0 +1,25 @@
+<IfModule mod_security2.c>
+  SecRuleEngine Off
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Allow CORS preflight
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^ - [L]
+
+    # Pass authenticated POST requests
+    RewriteCond %{REQUEST_METHOD} POST
+    RewriteRule ^ - [L]
+
+    # Restrict GET access to allowed origins
+    RewriteCond %{REQUEST_METHOD} GET
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?yourdomain\.com [NC]
+    RewriteCond %{HTTP_ORIGIN} !^https?://music\.youtube\.com [NC]
+    RewriteRule ^.*$ - [F,L]
+</IfModule>

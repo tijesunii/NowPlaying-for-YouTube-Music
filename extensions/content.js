@@ -78,3 +78,51 @@ function initializeTracker() {
 }
 
 initializeTracker();
+
+// --- Remote Control ---
+let remoteInterval = null;
+
+function initializeRemoteControl() {
+    if (remoteInterval) clearInterval(remoteInterval);
+    
+    remoteInterval = setInterval(() => {
+        chrome.storage.sync.get(['remoteUrl'], (config) => {
+            if (!config.remoteUrl) return;
+
+            const cacheBusterUrl = config.remoteUrl + '?t=' + Date.now();
+
+            fetch(cacheBusterUrl, { method: 'GET' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.command) {
+                        executeRemoteCommand(data.command);
+                    }
+                })
+                .catch(err => {
+                    // Suppress polling errors
+                });
+        });
+    }, 2000);
+}
+
+function executeRemoteCommand(command) {
+    // Dispatch bubbling MouseEvent for Polymer components
+    const clickEvent = new MouseEvent('click', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
+
+    if (command === 'next') {
+        const btn = document.querySelector('.next-button');
+        if (btn) btn.dispatchEvent(clickEvent);
+    } else if (command === 'prev') {
+        const btn = document.querySelector('.previous-button');
+        if (btn) btn.dispatchEvent(clickEvent);
+    } else if (command === 'play_pause') {
+        const btn = document.querySelector('.play-pause-button');
+        if (btn) btn.dispatchEvent(clickEvent);
+    }
+}
+
+initializeRemoteControl();
