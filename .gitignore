@@ -1,2 +1,14 @@
+# Backend Deployments & State
 /api/
 current-track.json
+command.json
+
+# AI Configuration & Workspace Rules
+GEMINI.md
+AGENTS.md
+.agents/
+_agents/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
