@@ -1,7 +1,6 @@
 <?php
-// NowPlaying Webhook Receiver
 
-define('SECRET_TOKEN', 'YOUR_SUPER_SECRET_TOKEN_HERE'); 
+define('SECRET_TOKEN', 'your_secret_token_here'); 
 define('DATA_FILE', __DIR__ . '/current-track.json');
 
 header('Access-Control-Allow-Origin: *');

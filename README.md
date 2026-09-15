@@ -1,34 +1,29 @@
-# NowPlaying for YouTube™ Music
+# NowPlaying for YouTube Music
 
-A sleek and highly optimized Chrome Extension that securely tracks what you are listening to on YouTube Music and broadcasts it to a custom webhook. Perfect for displaying a real-time "Now Playing" widget on your personal developer portfolio.
+A lightweight tracker and remote control for YouTube Music. It tracks what you are listening to in real-time so you can display it on your personal portfolio, and lets you control the music directly from your phone.
 
-## Architecture
+## How it Works
 
-This project is divided into two parts:
-1. **The Chrome Extension (`extension/`)**: Extracts track info locally without heavy polling.
-2. **The Webhook Backend (`backend-template/`)**: A PHP script that receives the data and serves it to your portfolio.
+1. **Chrome Extension**: Runs in your browser and grabs the song title, artist, and cover art whenever the music changes.
+2. **PHP Backend**: A simple, fast server relay that receives the song data and securely handles commands. 
+3. **Flutter Mobile App**: A sleek mobile app that acts as a remote control, allowing you to skip tracks or pause the music from anywhere.
 
-## 🚀 Installation & Setup
+## Setup Guide
 
-### 1. Host your Webhook (Backend)
-1. Upload the `backend-template/` directory to your web server (e.g., `https://your-domain.com/api/`).
-2. Open `now-playing.php` and change `YOUR_SUPER_SECRET_TOKEN_HERE` to a strong, random password.
-3. Ensure the folder has write permissions so the script can create the `current-track.json` file.
+### 1. Server Setup (PHP)
+1. Upload the contents of the `/backend-template` folder to your web server (e.g., `https://your-domain.com/api/`).
+2. Open `now-playing.php` and `remote.php` and change the `SECRET_TOKEN` to a secure, random password.
+3. Make sure the folder has write permissions so the script can save the `current-track.json` and `command.json` files.
 
-### 2. Install the Extension
-1. Clone or download this repository.
-2. Open Google Chrome and navigate to `chrome://extensions/`.
-3. Enable **Developer Mode** in the top right corner.
-4. Click **Load unpacked** and select the `extension/` folder.
+### 2. Chrome Extension Setup
+1. Open Google Chrome and go to `chrome://extensions/`.
+2. Turn on **Developer Mode** in the top right corner.
+3. Click **Load unpacked** and select the `/extensions` folder from this project.
+4. Click the extension icon in your toolbar to open the settings.
+5. Enter your server URLs and the Secret Token you set in step 1, then click **Save**.
 
-### 3. Configure the Tracker
-1. In Chrome, click the extension icon in your toolbar to open the settings popup.
-2. Enter the full URL to your PHP script (e.g., `https://your-domain.com/api/now-playing.php`).
-3. Enter the Secret Token you defined in the PHP file.
-4. Click **Save**.
-
-### 4. Display on your Portfolio
-Make a simple `GET` request from your portfolio frontend to your PHP endpoint. It will return JSON containing the current track:
+### 3. Display on your Portfolio
+To show the currently playing song on your website, make a simple `GET` request to your `now-playing.php` URL. It will return the live track data in JSON format:
 ```json
 {
   "is_playing": true,
@@ -39,8 +34,8 @@ Make a simple `GET` request from your portfolio frontend to your PHP endpoint. I
 }
 ```
 
-## 🛡️ Security & Performance Highlights
-* **Zero-Polling Architecture**: Uses `MutationObserver` and native Media Events instead of heavy `setInterval` loops, keeping your CPU usage at 0% when the track isn't changing.
-* **Cryptographic Safety**: The PHP backend uses `hash_equals()` to prevent timing attacks against your secret token.
-* **Concurrency Safe**: File writes utilize `LOCK_EX` to eliminate JSON corruption under heavy loads.
-* **XSS Mitigation**: Aggressively sanitizes inputs via `textContent` locally and `htmlspecialchars` on the server, while validating image URLs.
+### 4. Mobile App Setup (Optional)
+To use the remote control:
+1. Install the provided `.apk` from the Releases tab on GitHub, or compile the `/mobile-app` folder yourself using Flutter.
+2. Open the app and tap the Settings gear icon.
+3. Enter your server URLs and Secret Token to connect it to your backend.

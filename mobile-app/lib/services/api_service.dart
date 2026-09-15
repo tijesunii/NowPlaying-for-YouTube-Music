@@ -17,7 +17,6 @@ class ApiService {
     required this.onError,
   });
 
-  /// Updates internal configuration and triggers an immediate fetch if valid.
   void updateConfig({
     required String trackingUrl,
     required String remoteUrl,
@@ -32,7 +31,6 @@ class ApiService {
     }
   }
 
-  /// Begins a 3-second periodic polling loop to fetch live track data.
   void startPolling() {
     _pollingTimer?.cancel();
     _pollingTimer = Timer.periodic(const Duration(seconds: 3), (_) {
@@ -40,22 +38,17 @@ class ApiService {
     });
   }
 
-  /// Stops the polling loop (e.g. when app goes to background).
   void stopPolling() {
     _pollingTimer?.cancel();
     _pollingTimer = null;
   }
 
-  /// Fetches the live JSON from the tracking endpoint.
   Future<void> _fetchNowPlaying() async {
     if (_trackingUrl.isEmpty) return;
 
     try {
-      // Append a cache-buster timestamp just in case the server/ISP caches GET requests
       final cacheBusterUrl = '$_trackingUrl?t=${DateTime.now().millisecondsSinceEpoch}';
       
-      // We must spoof the Referer header to match the domain so your .htaccess firewall
-      // doesn't block the GET request (since we blocked empty referers earlier).
       final uri = Uri.parse(_trackingUrl);
       final referer = '${uri.scheme}://${uri.host}/';
 
@@ -73,12 +66,9 @@ class ApiService {
         onTrackUpdate(track);
       }
     } catch (e) {
-      // Intentionally suppressing periodic network errors to avoid console spam 
-      // when the user loses connection or server is briefly unreachable.
     }
   }
 
-  /// Sends a playback command via POST to the remote endpoint.
   Future<bool> sendCommand(String command) async {
     if (_remoteUrl.isEmpty || _secret.isEmpty) {
       onError("Missing configuration. Please check settings.");
@@ -96,7 +86,6 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        // Optimistically fetch the new track state immediately after sending command
         Future.delayed(const Duration(milliseconds: 500), _fetchNowPlaying);
         return true;
       } else {
@@ -104,7 +93,11 @@ class ApiService {
         return false;
       }
     } catch (e) {
-      onError("Network error: $e");
+      if (e.toString().contains('SocketException')) {
+        onError("Could not reach the server. Please check your internet connection and URL.");
+      } else {
+        onError("An unexpected network error occurred.");
+      }
       return false;
     }
   }

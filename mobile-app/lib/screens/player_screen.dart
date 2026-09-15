@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/track_data.dart';
 import '../services/api_service.dart';
 import 'settings_screen.dart';
@@ -84,10 +84,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Blur
           if (hasImage)
             CachedNetworkImage(
-              imageUrl: _currentTrack.image,
+              imageUrl: _currentTrack.highResImage,
               fit: BoxFit.cover,
               errorWidget: (context, url, error) => const SizedBox(),
             ),
@@ -99,12 +98,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
               ),
             ),
           
-          // Main UI
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Album Art Container
                 Container(
                   width: 320,
                   height: 320,
@@ -122,7 +119,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     borderRadius: BorderRadius.circular(20),
                     child: hasImage
                         ? CachedNetworkImage(
-                            imageUrl: _currentTrack.image,
+                            imageUrl: _currentTrack.highResImage,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Container(color: const Color(0xFF1C1C1E)),
                             errorWidget: (context, url, error) => _buildPlaceholderArt(),
@@ -133,7 +130,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 
                 const SizedBox(height: 50),
                 
-                // Track Title and Artist
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
@@ -168,7 +164,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 
                 const SizedBox(height: 60),
                 
-                // Playback Controls
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

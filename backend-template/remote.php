@@ -1,7 +1,6 @@
 <?php
-// NowPlaying Remote Command Endpoint
 
-define('SECRET_TOKEN', 'your_secret_token_here'); // Change this to a secure random string!
+define('SECRET_TOKEN', 'your_secret_token_here');
 define('COMMAND_FILE', __DIR__ . '/command.json');
 
 header('Access-Control-Allow-Origin: *');
@@ -13,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// 1. FLUTTER APP SENDS COMMAND
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
 
@@ -62,24 +60,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// 2. CHROME EXTENSION READS COMMAND
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     header('Content-Type: application/json');
     
     if (file_exists(COMMAND_FILE)) {
-        // Read the command
         $commandData = file_get_contents(COMMAND_FILE);
         
-        // Immediately delete the file so it isn't triggered twice
         if (unlink(COMMAND_FILE)) {
             echo $commandData;
         } else {
-            // Fallback if unlink fails for some reason, empty the file
             file_put_contents(COMMAND_FILE, '');
             echo $commandData;
         }
     } else {
-        // No pending commands
         echo json_encode(['command' => null]);
     }
     exit;

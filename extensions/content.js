@@ -2,7 +2,6 @@ let lastState = { title: null, artist: null, is_playing: null };
 let syncTimeout = null;
 let observer = null;
 
-// Debounce state changes
 function requestSync() {
     if (syncTimeout) clearTimeout(syncTimeout);
     syncTimeout = setTimeout(performSync, 500);
@@ -79,7 +78,6 @@ function initializeTracker() {
 
 initializeTracker();
 
-// --- Remote Control ---
 let remoteInterval = null;
 
 function initializeRemoteControl() {
@@ -99,14 +97,12 @@ function initializeRemoteControl() {
                     }
                 })
                 .catch(err => {
-                    // Suppress polling errors
                 });
         });
     }, 2000);
 }
 
 function executeRemoteCommand(command) {
-    // Dispatch bubbling MouseEvent for Polymer components
     const clickEvent = new MouseEvent('click', {
         view: window,
         bubbles: true,

@@ -11,6 +11,12 @@ class TrackData {
     required this.isPlaying,
   });
 
+  String get highResImage {
+    return image.replaceAllMapped(RegExp(r'([=\-])w\d+-h\d+'), (match) {
+      return '${match.group(1)}w1024-h1024';
+    });
+  }
+
   factory TrackData.fromJson(Map<String, dynamic> json) {
     return TrackData(
       title: json['title'] ?? 'Not Playing',
